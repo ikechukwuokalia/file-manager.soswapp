@@ -60,11 +60,11 @@ $params = $gen->requestParam([
 
     <section id="main-content">
       <form
-      id="file-delete-form"
-      method="post"
-      action="/app/ikechukwuokalia/file-manager.soswapp/src/DeleteFile.php"
-      data-validate="false"
-      onsubmit="sos.form.submit(this,isFileDeleted);return false;"
+        id="file-delete-form"
+        method="post"
+        action="/app/ikechukwuokalia/file-manager.soswapp/src/DeleteFile.php"
+        data-validate="false"
+        onsubmit="sos.form.submit(this,isFileDeleted);return false;"
       >
       <input type="hidden" name="form" value="file-delete-form">
       <input type="hidden" name="CSRF_token" value="<?php echo $session->createCSRFtoken("file-delete-form");?>">
