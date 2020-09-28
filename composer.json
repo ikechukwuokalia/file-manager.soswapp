@@ -1,23 +1,42 @@
 {
-  "name": "soswapp/soswapp",
-  "description": "7 OS Web - App template",
-  "keywords": ["php", "javascript","7","seven","os","web","app"],
-  "homepage": "https://github.com/soswapp/soswapp",
-  "type": "library",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Ikechukwu Okalia",
-      "email": "dev@ikechukwuokalia.com"
+    "name": "ikechukwuokalia/file-manager.soswapp",
+    "description": "File manager for 7 OS -Web project",
+    "keywords": ["ikechukwuokalia", "ikechukwu", "okalia", "file", "manager","soswapp", "seven", "7", "os","web"],
+    "homepage": "https://github.com/ikechukwuokalia/file-manager.soswapp",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+      {
+        "name": "Ikechukwu Okalia",
+        "email": "dev@ikechukwuokalia.com"
+      }
+    ],
+    "require": {
+      "tymfrontiers-cdn/php-session" : ">=0.1@stable",
+      "tymfrontiers-cdn/php-generic" : ">=0.1@stable",
+      "tymfrontiers-cdn/php-data" : ">=0.1@stable",
+      "tymfrontiers-cdn/php-error-log" : ">=0.1@stable",
+      "tymfrontiers-cdn/php-helper-fnvars" : ">=0.1@stable",
+      "tymfrontiers-cdn/php-instance-error" : ">=0.1@stable",
+      "tymfrontiers-cdn/php-http-header" : ">=0.1@stable",
+      "tymfrontiers-cdn/php-http-client" : ">=0.1@stable",
+      "tymfrontiers-cdn/php-validator": ">=0.1.0@stable",
+      "tymfrontiers-cdn/php-file": ">=0.1.0@stable",
+      "soswapp/theme-soswapp" : ">=0.1@stable",
+      "soswapp/jquery.soswapp" : ">=0.1@stable",
+      "soswapp/js-generic.soswapp" : ">=0.1@stable",
+      "soswapp/file.soswapp" : ">=0.1@stable",
+      "soswapp/fancybox.soswapp" : ">=0.1@stable",
+      "soswapp/jcrop.soswapp" : ">=0.1@stable",
+      "soswapp/plugin.soswapp" : ">=0.1@stable"
     },
-    {
-      "name": "Tym Frontiers Ltd.",
-      "email": "dev@tymfrontiers.com"
+    "require-dev": {},
+    "autoload": {
+      "psr-4": {
+        "IkechukwuOkalia\\" : "src/"
+      },
+      "files" : [
+        "src/default.conf.php"
+      ]
     }
-  ],
-  "require": {},
-  "require-dev": {},
-  "autoload": {
-      "psr-4": {}
-  }
 }

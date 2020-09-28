@@ -1,19 +1,15 @@
 {
-  "nav" : false,
-  "icon" : "<i class='fas fa-icon'</i>",
-  "name" : "soswapp/soswapp",
-  "title" : "App template",
-  "description" : "7 OS Web app - template.",
-  "homepage" : "https://github.com/soswapp/soswapp",
+  "nav" : true,
+  "icon" : "<i class='fas fa-file'</i>",
+  "name" : "ikechukwuokalia/file-manager.soswapp",
+  "title" : "File manager",
+  "description" : "File Manager app for 7 OS Web",
+  "homepage" : "https://github.com/ikechukwuokalia/file-manager.soswapp",
   "authors": [
-      {
-        "name": "Ikechukwu Okalia",
-        "email": "dev@ikechukwuokalia.com"
-      },
-      {
-        "name": "Tym Frontiers Ltd.",
-        "email": "dev@tymfrontiers.com"
-      }
+    {
+      "name": "Ikechukwu Okalia",
+      "email": "dev@ikechukwuokalia.com"
+    }
   ],
   "support" : {
     "email" : "dev@tymfrontiers.com",

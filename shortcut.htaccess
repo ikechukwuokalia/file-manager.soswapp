@@ -1,0 +1,8 @@
+##-ikechukwuokalia/file-manager.soswapp-START
+RewriteRule ^app/file\-manager/?$ /app/ikechukwuokalia/file-manager.soswapp/ [QSA,NC,L]
+RewriteRule ^app/file\-manager/(src|css|img|js|font|sass)/(.*)$ /app/ikechukwuokalia/file-manager.soswapp/$1/$2 [QSA,NC,L]
+RewriteRule ^app/file\-manager/(image|audio|video|document)$ /app/ikechukwuokalia/file-manager.soswapp/?type=$1 [QSA,NC,L]
+RewriteRule ^app/file\-manager/([0-9a-zA-Z\-\.]{3,})$ /app/ikechukwuokalia/file-manager.soswapp/service/$1.php [QSA,NC,L]
+RewriteRule ^app/file\-manager/([0-9a-zA-Z\-\.]{3,})/([0-9a-zA-Z\-\.]{3,})$ /app/ikechukwuokalia/file-manager.soswapp/service/$1-$2.php [QSA,NC,L]
+RewriteRule ^app/file\-manager/(.*)$ /app/ikechukwuokalia/file-manager.soswapp/$1 [QSA,NC,L]
+##-ikechukwuokalia/file-manager.soswapp-END

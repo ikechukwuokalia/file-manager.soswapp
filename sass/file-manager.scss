@@ -1,0 +1,201 @@
+/*! SirLouis File Manager for 7 OS -Web: https://github.com/7os/faderbox-soswapp
+  ! Requires 7os/theme-soswapp available @ https://github.com/7os/theme-soswapp
+*/
+@import 'fn';
+@import 'colors';
+
+#upload-trigger{
+  position: relative;
+  width: 180px;
+  height: 160px;
+  margin: 0 auto;
+  @include border-radius(12px);
+  border: dashed 4px rgba($silver,0.8);
+  @include animate-all;
+  text-align: center;
+  padding: 35px 12px;
+  color: $silver;
+  &:hover{
+    padding-top: 40px;
+    border-width: 5px;
+    color: lighten(#000,10%);
+    border-color: $silver;
+    cursor: pointer;
+  }
+}
+#upload-stats{
+  position: relative;
+}
+#crp-port{
+  position: relative;
+  #crp-tgt-wrap{
+    position: relative;
+    padding: 5px;
+    border: solid 1px $silver;
+    @include border-radius(5px);
+    height: auto;
+    text-align: center !important;
+    #crp-target{
+      @include border-radius(5px);
+      &.ini-view{
+        max-width: 100%;
+        height: auto;
+      }
+    }
+  }
+}
+#file-list{
+  position: relative;
+  .file-box{
+    position: relative;
+    &.thumb{
+      height: 250px;
+      overflow: hidden;
+      @include border-radius(8px);
+      background-color: $asphalt;
+      img{
+        width: 100%;
+        height: auto;
+        min-height: 100%;
+        // @include border-radius(8px);
+      }
+      .thumb-icon-wrap{
+        height: 90px;
+        width: 90px;
+        display: block;
+        position: absolute;
+        left: 50%; top: 50%;
+        transform: translate(-50%, -50%);
+        padding: 5px;
+        @include border-radius(16px);
+        background-color: rgba(#ffffff,0.5);
+        @include drop-shadow(#000);
+        @include animate-all;
+        &:hover{
+          background-color: rgba(#ffffff,0.8);
+        }
+        .thumb-icon{
+          display: block;
+          position: relative;
+          height: 80px;
+          width: 80px;
+          @include border-radius(16px);
+          border: solid 1px $asphalt;
+          color: $blue;
+          text-align: center;
+          padding: 10px;
+          &::before{
+            display: inline-block;
+            font-family: "Font Awesome 5 Free", "Font Awesome 5 Pro";
+            font-size: 3.5em;
+            font-weight: bold;
+          }
+        }
+      }
+      .thumb-caption{
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 65px;
+        overflow: hidden;
+        background-color: rgba(#ffffff,0.5);
+        opacity: 0.8;
+        @include animate-all;
+        color: black;
+        h2, h3, h4{
+          margin: 0;
+          padding: 10px 10px;
+          max-height: 70px;
+          overflow: hidden;
+          padding-right: 35px;
+        }
+        .expand-tool{
+          position: absolute;
+          top: 5px; right: 5px;
+          // background-color: transparent;
+          margin: 0; padding: 12px;
+          @include no-shadow;
+          @include border-radius(12px);
+        }
+        &:hover, &.xpand{
+          height: 100%;
+          opacity: 1;
+        }
+        .btn-stack{
+          margin: 0;
+          padding: 10px;
+          text-align: center;
+          .file-action{
+            margin: 2px;
+            padding: 8px 10px;
+            @include no-shadow;
+            border: solid 2px transparent;
+            @include border-radius(12px);
+            float: none;
+            display: inline-block;
+            &:hover{
+              border-color: $asphalt;
+              background-color: transparent;
+              color: $asphalt
+            }
+          }
+        }
+      }
+    }
+    &.image .thumb-icon::before{ content: '\f03e'; color: $pink; }
+    &.audio .thumb-icon::before{ content: '\f58f'; color: $pumpkin; }
+    &.document .thumb-icon::before{ content: '\f15c'; color: $indigo; }
+    &.video .thumb-icon::before{ content: '\f03d'; color: $purple; }
+    &.archive .thumb-icon::before{ content: '\f1c6'; color: $midnight-blue; }
+    &.script .thumb-icon::before{ content: '\f1c9'; color: $deep-purple; }
+    &.graphic .thumb-icon::before{ content: '\f53f'; color: $lime; }
+    &.unknown .thumb-icon::before{ content: '\f15b'; color: inherit; }
+  }
+  &.no-result::after{
+    content: "No files here!";
+    display: block;
+    padding: 18px;
+    border: dashed 2px $silver;
+    color: $silver;
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: lighter;
+    font-family: fantasy;
+    margin: 0 auto;
+    width: 60%;
+    @include border-radius(12px);
+  }
+}
+.data-pager{
+  position: relative;
+  float: right;
+  margin: 20px 0 20px;
+  padding: 8px;
+  .pager-btn{
+    position: relative;
+    float: right;
+    .sos-btn{
+      display: inline-block;
+      margin: 0;
+      padding: 10px 25px;
+      @include no-shadow;
+      @include border-radius(0px);
+      &:first-child{
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+      }
+      &:last-child{
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+      }
+    }
+  }
+  .pager-num{
+    position: relative;
+    float: left;
+    margin-right: 10px;
+    font-size: 1.3em;
+    padding: 12px 15px;
+  }
+}
