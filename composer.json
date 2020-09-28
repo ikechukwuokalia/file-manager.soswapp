@@ -22,7 +22,7 @@
       "tymfrontiers-cdn/php-http-client" : ">=0.1@stable",
       "tymfrontiers-cdn/php-validator": ">=0.1.0@stable",
       "tymfrontiers-cdn/php-file": ">=0.1.0@stable",
-      "soswapp/theme-soswapp" : ">=0.1@stable",
+      "soswapp/theme.soswapp" : ">=0.1@stable",
       "soswapp/jquery.soswapp" : ">=0.1@stable",
       "soswapp/js-generic.soswapp" : ">=0.1@stable",
       "soswapp/file.soswapp" : ">=0.1@stable",
