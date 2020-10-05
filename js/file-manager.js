@@ -25,7 +25,9 @@ function populateDnav () {
   }
 };
 if (typeof io == "undefined") window.io = {};
-function handleUpload (resp) {
+// function handleUpload (resp) {
+// };
+window.handleUpload = function(resp) {
   sos.fbx.close();
   if (typeof resp.uploaded_files !== "undefined" && object_length(resp.uploaded_files) === 1) {
     let images = [];
@@ -39,7 +41,7 @@ function handleUpload (resp) {
       },550);
     }
   }
-};
+}
 function handleCrop (resp) {
   if (resp.status === "0.0" || object_length(resp.errors) === 0) {
     sos.fbx.close();
@@ -59,9 +61,8 @@ function goCrop (imgId, exParam = {}) {
       prm[k] = v;
     });
   }
-  sos.fbx.url(`${location.origin}/file-manager/crop-image`,prm,{exitBtn:true});
+  sos.fbx.url(`/app/ikechukwuokalia/file-manager.soswapp/service/crop-image.php`,prm,{exitBtn:true});
 };
-
 // files page operators
 const deleteFile = (fid) => {
   if( confirm("Are you sure you want to delete this domain?") ){
@@ -122,7 +123,9 @@ $.fn.pageFile = function(){
 };
 
 // ---------------------------------
-const pConf = sos.config.page;
+if (typeof window['pConf'] == undefined) {
+  const pConf = sos.config.page;
+}
 function checkPost (resp = {}) {
   if( resp && resp.status === "0.0"){
     setTimeout(function(){
@@ -131,11 +134,12 @@ function checkPost (resp = {}) {
     },1800);
   }
 }
-function requery () {
-  if ($('#query-form').length > 0 ) $('#query-form').submit();
+if (typeof window['requery'] == undefined) {
+  window.requery = function () {
+    if ($('#query-form').length > 0 ) $('#query-form').submit();
+  }
 }
 function listFiles (files) {
-  console.log(files);
   let wrapr = $(pConf.datacontainer);
   if (wrapr.length > 0 && files.length > 0) {
     wrapr.removeClass("no-result");
@@ -175,45 +179,51 @@ function listFiles (files) {
     wrapr.html(html);
   }
 };
-const doFetch = (resp) => {
-  if( resp && resp.status == "0.0" && object_length(resp[pConf.datasearch]) > 0){
-    $('.pages-text').text(resp.pages); $('.pages-val').val(resp.pages); sos.config.page["pages"] = resp.pages;
-    $('.records-text').text(resp.records); $('.records-val').val(resp.records); sos.config.page["records"] = resp.records;
-    $('.page-val').val(resp.page); $('.page-text').text(resp.page); sos.config.page["page"] = resp.page;
-    $('.limit-val').val(resp.limit); $('.limit-text').text(resp.limit); sos.config.page["limit"] = resp.limit;
-    if( resp.has_next_page ) $('#next-page').data('page',resp.next_page); sos.config.page["hasNextPage"] = resp.has_next_page;
-    if( resp.has_previous_page ) $('#previous-page').data('page',resp.previous_page); sos.config.page["hasPreviousPage"] = resp.has_previous_page;
-    if (typeof window[pConf.datahandle] === "function") {
-      window[pConf.datahandle](resp[pConf.datasearch]);
+if (typeof doFetch == "undefined") {
+  const doFetch = (resp) => {
+    if( resp && resp.status == "0.0" && object_length(resp[pConf.datasearch]) > 0){
+      $('.pages-text').text(resp.pages); $('.pages-val').val(resp.pages); sos.config.page["pages"] = resp.pages;
+      $('.records-text').text(resp.records); $('.records-val').val(resp.records); sos.config.page["records"] = resp.records;
+      $('.page-val').val(resp.page); $('.page-text').text(resp.page); sos.config.page["page"] = resp.page;
+      $('.limit-val').val(resp.limit); $('.limit-text').text(resp.limit); sos.config.page["limit"] = resp.limit;
+      if( resp.has_next_page ) $('#next-page').data('page',resp.next_page); sos.config.page["hasNextPage"] = resp.has_next_page;
+      if( resp.has_previous_page ) $('#previous-page').data('page',resp.previous_page); sos.config.page["hasPreviousPage"] = resp.has_previous_page;
+      if (typeof window[pConf.datahandle] === "function") {
+        window[pConf.datahandle](resp[pConf.datasearch]);
+      }
+      removeAlert();
+      pageNatr();
+    } else {
+      $(`${pConf.datacontainer}`).html('').addClass("no-result");
     }
-    removeAlert();
     pageNatr();
-  } else {
-    $(`${pConf.datacontainer}`).html('').addClass("no-result");
-  }
-  pageNatr();
+  };
 };
-const pageNatr = () => {
-  let elem = $(`${pConf.datapager}`);
-  if (pConf.hasPreviousPage) {
-    $(document).find("button.prev-page-btn").remove();
-    elem.append($(`<button class='sos-btn face-secondary prev-page-btn' onclick="pageTo(${pConf.page - 1});"> <i class="fal fa-2x fa-angle-left"></i></button>`));
-  } else {
-    $(document).find("button.prev-page-btn").remove();
-  }
-  if (pConf.hasNextPage) {
-    $(document).find("button.next-page-btn").remove();
-    elem.append($(`<button class='sos-btn face-secondary next-page-btn' onclick="pageTo(${pConf.page + 1});"> <i class="fal fa-2x fa-angle-right"></i></button>`));
-  } else {
-    $(document).find("button.next-page-btn").remove();
-  }
-};
-const pageTo = (page = 0) => {
-  if (page > 0) {
-    $(`.page-val`).val(page);
-    requery();
-  }
-};
+if (typeof pageNatr == undefined) {
+  const pageNatr = () => {
+    let elem = $(`${pConf.datapager}`);
+    if (pConf.hasPreviousPage) {
+      $(document).find("button.prev-page-btn").remove();
+      elem.append($(`<button class='sos-btn face-secondary prev-page-btn' onclick="pageTo(${pConf.page - 1});"> <i class="fal fa-2x fa-angle-left"></i></button>`));
+    } else {
+      $(document).find("button.prev-page-btn").remove();
+    }
+    if (pConf.hasNextPage) {
+      $(document).find("button.next-page-btn").remove();
+      elem.append($(`<button class='sos-btn face-secondary next-page-btn' onclick="pageTo(${pConf.page + 1});"> <i class="fal fa-2x fa-angle-right"></i></button>`));
+    } else {
+      $(document).find("button.next-page-btn").remove();
+    }
+  };
+}
+if (typeof pageTo == undefined) {
+  const pageTo = (page = 0) => {
+    if (page > 0) {
+      $(`.page-val`).val(page);
+      requery();
+    }
+  };
+}
 function doPost(resp = {}) {
   if( resp && resp.status == '0.0' || resp.errors.length < 1 ){
     if( ('callback' in param) && typeof window[param.callback] === 'function' ){

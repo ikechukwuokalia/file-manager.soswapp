@@ -7,8 +7,7 @@ use \TymFrontiers\Generic,
     \TymFrontiers\MultiForm,
     \TymFrontiers\InstanceError,
     \TymFrontiers\API AS API;
-require_once "../app.init.php";
-require_once APP_BASE_INC;
+require_once "../.appinit.php";
 require_once __DIR__ . "/default.conf.php";
 
 \header("Content-Type: application/json");
