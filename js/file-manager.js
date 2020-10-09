@@ -1,4 +1,5 @@
 function populateDnav () {
+  console.log("populating");
   let val_param = {},
   val_param_count = 0;
   $.each(param, function(i, val) {
@@ -228,7 +229,7 @@ function doPost(resp = {}) {
   if( resp && resp.status == '0.0' || resp.errors.length < 1 ){
     if( ('callback' in param) && typeof window[param.callback] === 'function' ){
       faderBox.close();
-      window[param.callback](data);
+      window[param.callback](resp);
     }else{
       setTimeout(function(){
         faderBox.close();

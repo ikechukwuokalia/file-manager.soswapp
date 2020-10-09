@@ -10,6 +10,7 @@ require_once __DIR__ ."/src/default.conf.php";
 $gen =  new Generic;
 $params = $gen->requestParam([
   "fid" => ["fid","int"],
+  "ids" => ["ids","text",3,256],
   "fname" => ["fname","username", 3,128, [], "LOWER", ["-","_","."]],
   "type" => ["type","option",\array_keys($file_upload_groups)],
   "owner" => ["owner", "username", 3,12],
@@ -53,9 +54,11 @@ $params = $gen->requestParam([
     <input type="hidden" id="setup-page" data-datapager=".data-pager .pager-btn" data-datacontainer="#file-list" data-datasearch="files" data-datahandle="listFiles">
     <input type="hidden" id="rparam" <?php if ($params) { foreach($params as $k=>$v){ echo "data-{$k}=\"{$v}\" "; } }?>>
     <?php \TymFrontiers\Helper\setup_page((!empty($params['type']) ? "file-manager-{$params['type']}" : "file-manager"), "file-manager", true, PRJ_HEADER_HEIGHT); ?>
+
     <?php foreach (\array_keys($file_upload_groups) as $group): ?>
-      <?php echo "<input type='hidden' class='sos-dnav-extend' data-icon=\"<i class='fas fa-". file_group_nav_icon($group) ."'></i>\" data-path='/file-manager/{$group}' data-name='file-manager-{$group}' data-title='" . file_group_nav_title($group) ."'>\r\n" ?>
+      <?php echo "<input type='hidden' class='sos-dnav-extend' data-icon=\"<i class='fas fa-". file_group_nav_icon($group) ."'></i>\" data-path='/file-manager/{$group}' data-name='file-manager-{$group}' data-title='" . file_group_nav_title($group) ."'> \r\n" ?>
     <?php endforeach; ?>
+
     <?php include PRJ_INC_HEADER; ?>
 
     <section id="main-content">
@@ -89,6 +92,7 @@ $params = $gen->requestParam([
               >
               <input type="hidden" name="form" value="file-query-form">
               <input type="hidden" name="CSRF_token" value="<?php echo $session->createCSRFtoken("file-query-form");?>">
+              <input type="hidden" name="ids" value="<?php echo !empty($params['ids']) ? $params["ids"] : ''; ?>">
               <input type="hidden" class="page-val" name="page" value="1">
               <input type="hidden" class="limit-val" name="limit" value="20">
 
