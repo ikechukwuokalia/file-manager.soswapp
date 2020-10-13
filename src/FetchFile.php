@@ -28,6 +28,7 @@ $params = [
     "user"   => ["user","username",3,12,[], "MIXED"],
     "type"  => ["type","option", \array_keys($file_upload_groups)],
     "search" => ["search","text",3,55],
+    "ids" => ["ids","text",1,256],
 
     "id" =>["id","int",1,0],
     "page" =>["page","int",1,0],
@@ -64,18 +65,33 @@ if( !$http_auth ){
 $params["user"] = $session->name;
 $file = new MultiForm(MYSQL_FILE_DB, MYSQL_FILE_TBL, "id");
 $file->current_page = $page = (int)$params['page'] > 0 ? (int)$params['page'] : 1;
+$ids = [];
+if (!empty($params['ids'])) {
+  foreach (\explode(',', $params['ids']) as $id) {
+    if ((int)$id > 0) $ids[] = (int)$id;
+  }
+}
+$ids = !empty($ids) ? \implode(',',$ids) : false;
+
 $base_db = MYSQL_BASE_DB;
 $admin_db = MYSQL_ADMIN_DB;
 $whost = WHOST;
 $query =
-"SELECT fi.id, fi._locked AS locked, _watermarked AS watermarked, fi._checksum AS checksum, fi.nice_name, fi.type_group, fi.caption, fi._path AS 'path', fi.owner, fi.privacy,
+"SELECT fi.id, fi._locked AS locked, _watermarked AS watermarked, fi._checksum AS 'checksum', fi.nice_name,
+        fi.type_group, fi.caption, fi._path AS 'path', fi.owner, fi.privacy,
         fi._name AS name, fi._type AS type, fi._size AS size, fi._creator AS creator, fi._updated AS updated, fi._created AS created,
-        CONCAT(usp.name, ' ', usp.surname) AS creator_name,
-        CONCAT('{$whost}/file/',fi._name) AS url
+        fd.`user` AS set_user, fd.set_key AS set_as, ";
+if (\defined('FILE_ACCESS_SCOPE') && FILE_ACCESS_SCOPE == 'user') {
+  $query .= " CONCAT(usp.name, ' ', usp.surname) AS creator_name, ";
+}
+$query .= " CONCAT('/app/file/',fi._name) AS url
  FROM :db:.:tbl: AS fi ";
- $join = "LEFT JOIN `{$base_db}`.`user_profile` AS usp ON usp.user=fi._creator ";
+$join = " LEFT JOIN :db:.`file_default` AS fd ON fd.file_id = fi.id ";
+if (\defined('FILE_ACCESS_SCOPE') && FILE_ACCESS_SCOPE == 'user') {
+  $join .= " LEFT JOIN `{$base_db}`.`user_profile` AS usp ON usp.user=fi._creator ";
+}
 $cond = "";
-if (FILE_ACCESS_SCOPE === "ADMIN.RANK") {
+if (\defined('FILE_ACCESS_SCOPE') && FILE_ACCESS_SCOPE === "ADMIN.RANK") {
   $cond .= " WHERE (
     SELECT `rank`
     FROM `{$admin_db}`.`work_group`
@@ -100,6 +116,8 @@ if (!empty($params['id'])) {
 }else{
   if (!empty($params['type'])) {
     $cond .= " AND fi.type_group='{$params['type']}' ";
+  } if ($ids) {
+    $cond .= " AND fi.id IN({$ids}) ";
   } if( !empty($params['search']) ){
     $params['search'] = $db->escapeValue(\strtolower($params['search']));
     $cond .= " AND (
@@ -119,13 +137,13 @@ $file->per_page = $limit = !empty($params['id']) ? 1 : (
 
 $query .= $join;
 $query .= $cond;
-$sort = " ORDER BY fi.`_created` DESC ";
+$sort = " GROUP BY fi.id ORDER BY fi.`_created` DESC ";
 
 $query .= $sort;
 $query .= " LIMIT {$file->per_page} ";
 $query .= " OFFSET {$file->offset()}";
 
-// echo \str_replace(':tbl:','path_access',\str_replace(':db:',MYSQL_ADMIN_DB,$query));
+// echo \str_replace(':tbl:',MYSQL_FILE_TBL,\str_replace(':db:',MYSQL_FILE_DB,$query));
 // exit;
 $records = $file->findBySql($query);
 
@@ -139,6 +157,10 @@ if( !$records ){
 // process result
 $result = [
   'records' => (int)$count,
+  'search'  => (!empty($params['search']) ? $params['search'] : ""),
+  'id'  => (!empty($params['id']) ? $params['id'] : ""),
+  'ids'  => (!empty($params['ids']) ? $params['ids'] : ""),
+  'type'  => (!empty($params['type']) ? $params['type'] : ""),
   'page'  => $file->current_page,
   'pages' => $file->totalPages(),
   'limit' => $limit,
@@ -156,6 +178,7 @@ foreach ($records as $k=>$obj) {
   unset($records[$k]->total_count);
   unset($records[$k]->_checksum);
   unset($records[$k]->_creator);
+  unset($records[$k]->_watermarked);
   unset($records[$k]->_locked);
   unset($records[$k]->_name);
   unset($records[$k]->_path);
@@ -163,7 +186,8 @@ foreach ($records as $k=>$obj) {
   unset($records[$k]->_type);
 
   $records[$k]->id = (int)$records[$k]->id;
-  $records[$k]->min_caption = $data_obj->getLen($records[$k]->caption, 68);
+  $records[$k]->set_as = !empty($records[$k]->set_as) ? $records[$k]->set_as : false;
+  $records[$k]->min_caption = $data_obj->getLen($records[$k]->caption, 98);
   $records[$k]->locked = (bool)$records[$k]->locked;
   $records[$k]->watermarked = (bool)$records[$k]->watermarked;
   $records[$k]->can_watermark = $session->access_rank > 1;

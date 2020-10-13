@@ -12,7 +12,7 @@ $gen = new Generic;
 $required = [];
 $pre_params = [
   "type" => ["type","option",["image", "audio", "video", "document"]],
-  "owner" => ["owner", "username", 3,12],
+  "owner" =>["owner","username",5,21,[], "MIXED", [".","_","-"]],
   "set_as" => ["set_as", "text", 2,0],
   "set_multiple" => ["set_multiple", "boolean"],
   "upl_multiple" => ["upl_multiple", "boolean"],
@@ -40,6 +40,7 @@ if (!empty($params['type']) && \array_key_exists($params['type'], $file_upload_g
   }
 }
 if (empty($params['upl_cb'])) $params['upl_cb'] = "handleUpload";
+if (empty($params['crp_cb'])) $params['crp_cb'] = "requery";
 ?>
 <style media="screen">
   @-webkit-keyframes rotating /* Safari and Chrome */ {
@@ -150,7 +151,7 @@ if (empty($params['upl_cb'])) $params['upl_cb'] = "handleUpload";
             <input type="hidden" name="form" value="file-uploader-form">
             <input type="hidden" name="CSRF_token" value="<?php echo $session->createCSRFtoken("file-uploader-form");?>">
 
-            <input type="hidden" name="owner" value="<?php echo !empty($params['owner']) ? $params['owner'] : $session->name; ?>">
+            <input type="hidden" name="owner" value="<?php echo !empty($params['owner']) ? $params['owner'] : ((\define('FILE_ACCESS_SCOPE') && FILE_ACCESS_SCOPE == 'USER') ? $session->name : "SYSTEM.{$session->access_group}"); ?>">
             <input type="hidden" name="file_type" value="<?php echo $params['type']; ?>">
             <input type="hidden" name="set_as" value="<?php echo $params['set_as']; ?>">
             <input type="hidden" name="set_multiple" value="<?php echo $params['set_multiple']; ?>">
@@ -243,7 +244,7 @@ if (empty($params['upl_cb'])) $params['upl_cb'] = "handleUpload";
     },
     {
       search : "/file-manager.soswapp/js",
-      script : `/app/ikechukwuokalia/file-manager.soswapp/js/file-manager.min.js`,
+      script : `/app/ikechukwuokalia/file-manager.soswapp/js/file-manager-light.min.js`,
       type : "js"
     }
   ];

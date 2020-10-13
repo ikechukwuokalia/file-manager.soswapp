@@ -10,17 +10,20 @@ require_once __DIR__ ."/src/default.conf.php";
 $gen =  new Generic;
 $params = $gen->requestParam([
   "fid" => ["fid","int"],
-  "ids" => ["ids","text",3,256],
+  "ids" => ["ids","text",1,256],
   "fname" => ["fname","username", 3,128, [], "LOWER", ["-","_","."]],
   "type" => ["type","option",\array_keys($file_upload_groups)],
+  "frc_type" => ["frc_type","option",\array_keys($file_upload_groups)],
   "owner" => ["owner", "username", 3,12],
   "set_as" => ["set_as", "text", 2,0],
+  "set_multiple" => ["set_multiple", "boolean"],
   "set_ttl" => ["set_ttl", "text", 5, 32],
   "set_cb" => ["set_cb", "username", 3, 32, [], "MIXED",["_","."]],
   "upl_multiple" => ["upl_multiple", "boolean"],
   "upl_cb" => ["upl_cb", "username", 3, 32, [], "MIXED",[".","_"]],
   "crp_cb" => ["crp_cb", "username", 3, 32, [], "MIXED",[".","_"]],
-  "crp_ratio" => ["crp_ratio", "option", ["square","rectangle"]],
+  "crp_shape" => ["crp_shape", "option", ["square","rectangle"]],
+  "crp_ratio" => ["crp_ratio", "float" ],
   "rtt" => ["rtt","url"],
   "rtt_ttl" => ["rtt_ttl","text", 3, 28]
 ],$_GET,[]);
@@ -63,15 +66,17 @@ $params = $gen->requestParam([
 
     <section id="main-content">
       <form
-        id="file-delete-form"
+        id="file-mod-form"
         method="post"
-        action="/app/ikechukwuokalia/file-manager.soswapp/src/DeleteFile.php"
+        action="/app/ikechukwuokalia/file-manager.soswapp/src/AlterFile.php"
         data-validate="false"
-        onsubmit="sos.form.submit(this,isFileDeleted);return false;"
+        onsubmit="sos.form.submit(this,checkPost); return false;"
       >
-      <input type="hidden" name="form" value="file-delete-form">
-      <input type="hidden" name="CSRF_token" value="<?php echo $session->createCSRFtoken("file-delete-form");?>">
-      <input type="hidden" name="id" value="">
+      <input type="hidden" name="form" value="file-mod-form">
+      <input type="hidden" name="CSRF_token" value="<?php echo $session->createCSRFtoken("file-mod-form");?>">
+      <input type="hidden" name="fid" value="">
+      <input type="hidden" name="action" value="">
+      <input type="hidden" name="degree" value="">
     </form>
       <div class="view-space">
         <?php if (!empty($params['rtt'])): ?>
@@ -88,21 +93,24 @@ $params = $gen->requestParam([
               action="/app/ikechukwuokalia/file-manager.soswapp/src/FetchFile.php"
               data-validate="false"
               data-processresp = "0"
-              onsubmit="sos.form.submit(this,doFetch);return false;"
+              onsubmit="sos.form.submit(this, doFetch);return false;"
               >
               <input type="hidden" name="form" value="file-query-form">
               <input type="hidden" name="CSRF_token" value="<?php echo $session->createCSRFtoken("file-query-form");?>">
               <input type="hidden" name="ids" value="<?php echo !empty($params['ids']) ? $params["ids"] : ''; ?>">
               <input type="hidden" class="page-val" name="page" value="1">
-              <input type="hidden" class="limit-val" name="limit" value="20">
+              <input type="hidden" class="limit-val" name="limit" value="35">
 
               <div class="grid-12-tablet align-c">
-                <input type="radio" name="type" id="ftype-all" value="" <?php echo empty($params['type']) ? "checked" : ""; ?>>
+                <input type="radio" <?php echo !empty($params['frc_type']) ? "disabled" : ""; ?> name="type" id="ftype-all" value="" <?php echo empty($params['type']) ? "checked" : ""; ?>>
                 <label for="ftype-all">* All files</label>
                 <?php
                   foreach (\array_keys($file_upload_groups) as $ftype) {
                     echo "<input type='radio' value='{$ftype}' name='type' id='ftype-{$ftype}' ";
                     echo !empty($params['type']) && $params["type"] == $ftype ? " checked " : "";
+                    echo (!empty($params['frc_type']) && $params['frc_type'] !== $ftype)
+                      ? " disabled "
+                      : "";
                     echo ">";
                     echo "<label for='ftype-{$ftype}'>".file_group_nav_title($ftype)."</label>";
                   }
@@ -111,11 +119,11 @@ $params = $gen->requestParam([
               <br class="c-f">
               <div class="grid-6-phone grid-3-tablet"> <br class="c-f">
                 <button type="button" onclick="faderBox.url('/app/ikechukwuokalia/file-manager.soswapp/service/uploader-popup.php',{
-                  owner : '<?php echo !empty($params['owner']) ? $params['owner'] : $session->name; ?>',
+                  owner : '<?php echo !empty($params['owner']) ? $params['owner'] : ((\defined('FILE_ACCESS_SCOPE') && FILE_ACCESS_SCOPE == 'USER') ? $session->name : "SYSTEM.{$session->access_group}") ?>',
                   type : '<?php echo !empty($params['type']) ? $params['type'] : '' ?>',
                   set_as : '<?php echo !empty($params['set_as']) ? $params['set_as'] : '' ?>',
                   upl_cb : '<?php echo (!empty($params['set_as']) && !empty($params['set_cb'])) ? $params['set_cb'] : !empty($params['upl_cb']) ? $params['upl_cb'] : '' ?>',
-                  upl_multiple : <?php echo $params['upl_multiple'] == '' || (bool)$params['upl_multiple'] ? 1 : 0 ?>
+                  upl_multiple : <?php echo $params['upl_multiple'] == '' || (bool)$params['upl_multiple'] ? 1 : 0 ?>, set_multiple : <?php echo (bool)$params['set_multiple'] ? 1 : 0 ?>
                 },{exitBtn : true})" class="btn face-secondary"> <i class="fas fa-cloud-upload-alt"></i> Upload</button>
               </div>
               <div class="grid-6-tablet">
@@ -124,6 +132,11 @@ $params = $gen->requestParam([
               </div>
               <div class="grid-6-phone grid-3-tablet"> <br>
                 <button type="submit" class="btn face-primary"> <i class="fas fa-search"></i> Search</button>
+              </div>
+              <div class="grid-12-phone">
+                <p class="align-c margin -mnone">
+                  <a href="#" onclick="$('#query-form').trigger('reset');"> <i class="fas fa-undo"></i> Reset query</a>
+                </p>
               </div>
               <br class="c-f">
             </form>
@@ -166,12 +179,13 @@ $params = $gen->requestParam([
     <!-- project scripts -->
     <script src="<?php echo \html_script ("base.min.js"); ?>"></script>
     <script src="/app/ikechukwuokalia/file-manager.soswapp/js/file-manager.min.js"></script>
+    <script src="/app/ikechukwuokalia/file-manager.soswapp/js/file-manager-light.min.js"></script>
     <script type="text/javascript">
       var param = $("#rparam").data();
       function refreshList(){  $('#file-query-form').submit(); }
       if (typeof populateDnav === "function") $(document).on("dnavLoaded", populateDnav);
       $(document).ready(function() {
-        // requery();
+        requery();
       });
     </script>
   </body>

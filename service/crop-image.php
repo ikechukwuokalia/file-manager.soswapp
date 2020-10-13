@@ -214,7 +214,7 @@ if (!empty($params['fid'])) {
     },
     {
       search : "/file-manager.soswapp/js",
-      script : `/app/ikechukwuokalia/file-manager.soswapp/js/file-manager.min.js`,
+      script : `/app/ikechukwuokalia/file-manager.soswapp/js/file-manager-light.min.js`,
       type : "js"
     }
   ];

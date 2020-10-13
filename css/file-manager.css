@@ -79,8 +79,8 @@
   min-height: 100%;
 }
 #file-list .file-box.thumb .thumb-icon-wrap {
-  height: 90px;
-  width: 90px;
+  height: 70px;
+  width: 70px;
   display: block;
   position: absolute;
   left: 50%;
@@ -107,8 +107,8 @@
 #file-list .file-box.thumb .thumb-icon-wrap .thumb-icon {
   display: block;
   position: relative;
-  height: 80px;
-  width: 80px;
+  height: 60px;
+  width: 60px;
   -webkit-border-radius: 16px;
   -ms-border-radius: 16px;
   -moz-border-radius: 16px;
@@ -121,7 +121,7 @@
 #file-list .file-box.thumb .thumb-icon-wrap .thumb-icon::before {
   display: inline-block;
   font-family: "Font Awesome 5 Free", "Font Awesome 5 Pro";
-  font-size: 3.5em;
+  font-size: 2.5em;
   font-weight: bold;
 }
 #file-list .file-box.thumb .thumb-caption {
@@ -131,7 +131,7 @@
   width: 100%;
   height: 65px;
   overflow: hidden;
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.9);
   opacity: 0.8;
   -webkit-transition: all 0.2s ease-in;
   -moz-transition: all 0.2s ease-in;
@@ -139,6 +139,7 @@
   -o-transition: all 0.2s ease-in;
   transition: all 0.2s ease-in;
   color: black;
+  font-size: 0.82em;
 }
 #file-list .file-box.thumb .thumb-caption h2, #file-list .file-box.thumb .thumb-caption h3, #file-list .file-box.thumb .thumb-caption h4 {
   margin: 0;
@@ -167,12 +168,12 @@
 }
 #file-list .file-box.thumb .thumb-caption .btn-stack {
   margin: 0;
-  padding: 10px;
+  padding: 8px;
   text-align: center;
 }
 #file-list .file-box.thumb .thumb-caption .btn-stack .file-action {
   margin: 2px;
-  padding: 8px 10px;
+  padding: 6px 10px;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;

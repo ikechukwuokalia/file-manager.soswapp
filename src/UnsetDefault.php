@@ -14,18 +14,14 @@ $post = $_POST; // json data
 $gen = new Generic;
 $params = $gen->requestParam(
   [
-    "owner" =>["owner","username",5,21,[], "MIXED", [".","_","-"]],
+    "user" =>["user","username",2,12],
     "fid" => ["fid","int"],
-    "w" => ["width", "float",],
-    "h" => ["height", "float",],
-    "x" => ["x_position", "float",],
-    "y" => ["y_position", "float",],
 
     "form" => ["form","text",2,55],
     "CSRF_token" => ["CSRF_token","text",5,500]
   ],
   $post,
-  ["fid", "w", "h", "x", "y", 'CSRF_token','form']
+  ["fid", 'CSRF_token','form']
 );
 if (!$params || !empty($gen->errors)) {
   $errors = (new InstanceError($gen,true))->get("requestParam",true);
@@ -46,45 +42,56 @@ if ( !$gen->checkCSRF($params["form"],$params["CSRF_token"]) ) {
   ]);
   exit;
 }
-if (empty($params["owner"])) $params["owner"] = $session->name;
+if (empty($params["user"])) $params["user"] = $session->name;
 $file_db = MYSQL_FILE_DB;
 $file_tbl = MYSQL_FILE_TBL;
 // crop file
 $file = File::findById($params["fid"]);
-if (empty($file->id) || $file->type_group !== "image") {
+if (empty($file->id)) {
   echo \json_encode([
     "status" => "3.1",
-    "errors" => ["No image file was found for given [fid]"],
+    "errors" => ["No file was found for given [fid]"],
     "message" => "Request halted."
   ]);
   exit;
 }
-$file->crop_img = [
-  "x" => $params['x'],
-  "y" => $params['y'],
-  "w" => $params['w'],
-  "h" => $params['h']
-];
-if (!$file->cropImage()) {
+try {
+  Helper\setting_unset_file_default($file->id);
+} catch (\Exception $e) {
   echo \json_encode([
-    "status" => "3.1",
-    "errors" => ["Failed to crop image, contact Developer."],
-    "message" => "Request incomplete."
+    "status" => "4.1",
+    "errors" => ["Error occured: {$e->getMessage()}"],
+    "message" => "Request failed."
   ]);
   exit;
-} else {
-  // update file size
-  if ($fsize = \filesize($file->fullPath())) {
-    $database->query("UPDATE {$file_db}.`{$file_tbl}` SET _size = {$fsize} WHERE id={$file->id} LIMIT 1");
-  }
 }
+
+// if (!$database->query("DELETE FROM `{$file_db}`.`file_default` WHERE file_id = {$file->id}")) {
+//   $do_errors = [];
+//   $more_errors = (new InstanceError($database,true))->get('query',true);
+//   if (!empty($more_errors)) {
+//     foreach ($more_errors as $err){
+//       $do_errors[] = $err;
+//     }
+//     echo \json_encode([
+//       "status" => "4." . \count($do_errors),
+//       "errors" => $do_errors,
+//       "message" => "Request incomplete."
+//     ]);
+//     exit;
+//   } else {
+//     echo \json_encode([
+//       "status" => "0.1",
+//       "errors" => [],
+//       "message" => "Request completed with no changes made."
+//     ]);
+//     exit;
+//   }
+// }
 
 echo \json_encode([
   "status" => "0.0",
   "errors" => [],
-  "message" => "Request completed successfully.",
-  "id" => $file->id,
-  "caption" => $file->caption,
-  "url" => $file->url(),
+  "message" => "Request completed successfully."
 ]);
 exit;

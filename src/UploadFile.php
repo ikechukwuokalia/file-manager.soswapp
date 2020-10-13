@@ -10,7 +10,6 @@ require_once __DIR__ . "/default.conf.php";
 \require_login(false);
 
 \header("Content-Type: application/json");
-\require_login();
 
 $post = $_POST; // json data
 $gen = new Generic;
@@ -110,7 +109,7 @@ foreach ($_FILES as $pfid => $attached_file) {
       // set file
       if (!empty($params["set_as"])) {
         try {
-          Helper\setting_set_file_default($params['owner'], $params['set_as'], $file->id, (bool)$params["set_multiple"]);
+          Helper\setting_set_file_default((\defined('FILE_ACCESS_SCOPE') && FILE_ACCESS_SCOPE == 'USER' ? $params['owner'] : "SYSTEM"), $params['set_as'], $file->id, (bool)$params["set_multiple"]);
         } catch (\Exception $e) {
           $upload_errors[] = "(#{$pfid} - {$_FILES[$pfid]["name"]}) - Failed to complete setting due to error: ({$e->getMessage()})";
         }

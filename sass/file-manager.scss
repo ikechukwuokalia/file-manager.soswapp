@@ -60,8 +60,8 @@
         // @include border-radius(8px);
       }
       .thumb-icon-wrap{
-        height: 90px;
-        width: 90px;
+        height: 70px;
+        width: 70px;
         display: block;
         position: absolute;
         left: 50%; top: 50%;
@@ -77,8 +77,8 @@
         .thumb-icon{
           display: block;
           position: relative;
-          height: 80px;
-          width: 80px;
+          height: 60px;
+          width: 60px;
           @include border-radius(16px);
           border: solid 1px $asphalt;
           color: $blue;
@@ -87,7 +87,7 @@
           &::before{
             display: inline-block;
             font-family: "Font Awesome 5 Free", "Font Awesome 5 Pro";
-            font-size: 3.5em;
+            font-size: 2.5em;
             font-weight: bold;
           }
         }
@@ -99,10 +99,11 @@
         width: 100%;
         height: 65px;
         overflow: hidden;
-        background-color: rgba(#ffffff,0.5);
+        background-color: rgba(#ffffff,0.9);
         opacity: 0.8;
         @include animate-all;
         color: black;
+        font-size: 0.82em;
         h2, h3, h4{
           margin: 0;
           padding: 10px 10px;
@@ -124,11 +125,11 @@
         }
         .btn-stack{
           margin: 0;
-          padding: 10px;
+          padding: 8px;
           text-align: center;
           .file-action{
             margin: 2px;
-            padding: 8px 10px;
+            padding: 6px 10px;
             @include no-shadow;
             border: solid 2px transparent;
             @include border-radius(12px);
