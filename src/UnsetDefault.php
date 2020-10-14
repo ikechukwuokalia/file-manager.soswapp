@@ -5,7 +5,6 @@ use \TymFrontiers\File,
     \TymFrontiers\Generic,
     \TymFrontiers\Helper as Helper;
 require_once "../.appinit.php";
-require_once __DIR__ . "/default.conf.php";
 \require_login(false);
 
 \header("Content-Type: application/json");

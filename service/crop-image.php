@@ -4,7 +4,6 @@ use \TymFrontiers\Generic,
     \TymFrontiers\InstanceError,
     \TymFrontiers\File;
 require_once "../.appinit.php";
-require_once  APP_ROOT . "/src/default.conf.php";
 
 \require_login(false);
 

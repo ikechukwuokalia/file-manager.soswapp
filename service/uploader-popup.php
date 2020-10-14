@@ -3,7 +3,6 @@ namespace IkechukwuOkalia;
 use \TymFrontiers\Generic,
     \TymFrontiers\InstanceError;
 require_once "../.appinit.php";
-require_once  APP_ROOT . "/src/default.conf.php";
 
 \require_login(false);
 

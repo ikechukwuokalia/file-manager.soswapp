@@ -4,7 +4,6 @@ use \TymFrontiers\Generic,
     \TymFrontiers\InstanceError;
 
 require_once ".appinit.php";
-require_once __DIR__ ."/src/default.conf.php";
 
 \require_login(true);
 $gen =  new Generic;

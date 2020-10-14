@@ -8,7 +8,6 @@ use \TymFrontiers\Generic,
     \TymFrontiers\InstanceError,
     \TymFrontiers\API AS API;
 require_once "../.appinit.php";
-require_once __DIR__ . "/default.conf.php";
 
 \header("Content-Type: application/json");
 \require_login(false);
