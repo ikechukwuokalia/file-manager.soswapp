@@ -12,6 +12,7 @@ $required = [];
 $pre_params = [
   "type" => ["type","option",["image", "audio", "video", "document"]],
   "owner" =>["owner","username",5,21,[], "MIXED", [".","_","-"]],
+  "set_avatar" => ["set_avatar", "boolean"],
   "set_as" => ["set_as", "text", 2,0],
   "set_multiple" => ["set_multiple", "boolean"],
   "upl_multiple" => ["upl_multiple", "boolean"],
@@ -153,6 +154,7 @@ if (empty($params['crp_cb'])) $params['crp_cb'] = "requery";
             <input type="hidden" name="owner" value="<?php echo !empty($params['owner']) ? $params['owner'] : ((\define('FILE_ACCESS_SCOPE') && FILE_ACCESS_SCOPE == 'USER') ? $session->name : "SYSTEM.{$session->access_group}"); ?>">
             <input type="hidden" name="file_type" value="<?php echo $params['type']; ?>">
             <input type="hidden" name="set_as" value="<?php echo $params['set_as']; ?>">
+            <input type="hidden" name="set_avatar" value="<?php echo (bool)$params['set_sesskey'] ? 1 : 0; ?>">
             <input type="hidden" name="set_multiple" value="<?php echo $params['set_multiple']; ?>">
 
             <input

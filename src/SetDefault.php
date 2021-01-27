@@ -17,6 +17,7 @@ $params = $gen->requestParam(
     "set_user" =>["set_user","username",5,21,[], "MIXED", [".","_","-"]],
     "fid" => ["fid","int"],
     "set_as" => ["set_as", "text", 2,0],
+    "set_avatar" => ["set_avatar", "boolean"],
     "set_multiple" => ["set_multiple", "boolean"],
 
     "form" => ["form","text",2,55],
@@ -60,6 +61,9 @@ if (empty($file->id)) {
 }
 try {
   Helper\setting_set_file_default($params['set_user'], $params['set_as'], $file->id, (bool)$params["set_multiple"]);
+  if ((bool)$params["set_avatar"]) {
+    $session->user->avatar = $_SESSION['user']->avatar = $file->url();
+  }
 } catch (\Exception $e) {
   echo \json_encode([
     "status" => "4.1",
