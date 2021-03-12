@@ -177,6 +177,7 @@ if (empty($params['crp_cb'])) $params['crp_cb'] = "requery";
 
               <div id="upload-stats"></div>
             </div>
+            <br class="c-f">
             <div class="grid-7-phone grid-4-tablet">
               <button id="submit-form" type="submit" class="btn face-primary"> <i class="fas fa-upload"></i> Upload </button>
             </div>
