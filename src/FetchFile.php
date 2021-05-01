@@ -108,7 +108,7 @@ if (\defined('FILE_ACCESS_SCOPE') && FILE_ACCESS_SCOPE === "ADMIN.RANK") {
       LIMIT 1
       )";
 } else {
-  $cond .= " WHERE fi._creator = '{$database->escapeValue($params['user'])}' ";
+  $cond .= " WHERE (fi._creator = '{$database->escapeValue($params['user'])}' OR fi.owner = '{$database->escapeValue($params['user'])}') ";
 }
 if (!empty($params['id'])) {
   $cond .= " AND fi.id = {$params['id']} ";
