@@ -14,7 +14,7 @@ $gen = new Generic;
 $params = $gen->requestParam(
   [
     "user" =>["user","username",2,12],
-    "set_user" =>["set_user","username",5,21,[], "MIXED", [".","_","-"]],
+    "set_user" =>["set_user","username",5,21,[], "MIXED", [".","_","-","/"]],
     "fid" => ["fid","int"],
     "set_as" => ["set_as", "text", 2,0],
     "set_avatar" => ["set_avatar", "boolean"],
@@ -46,7 +46,7 @@ if ( !$gen->checkCSRF($params["form"],$params["CSRF_token"]) ) {
   exit;
 }
 if (empty($params["user"])) $params["user"] = $session->name;
-$params["set_user"] = \defined('FILE_ACCESS_SCOPE') && FILE_ACCESS_SCOPE == "USER" ? $session->user : "SYSTEM";
+$params["set_user"] = \defined('FILE_ACCESS_SCOPE') && FILE_ACCESS_SCOPE == "USER" ? (!empty($params["set_user"]) ? $params["set_user"] : $session->name) : "SYSTEM";
 $file_db = MYSQL_FILE_DB;
 $file_tbl = MYSQL_FILE_TBL;
 // crop file

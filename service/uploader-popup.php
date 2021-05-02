@@ -14,6 +14,7 @@ $pre_params = [
   "owner" =>["owner","username",5,21,[], "MIXED", [".","_","-"]],
   "set_avatar" => ["set_avatar", "boolean"],
   "set_as" => ["set_as", "text", 2,0],
+  "set_user" => ["set_user", "text", 2,0],
   "set_multiple" => ["set_multiple", "boolean"],
   "upl_multiple" => ["upl_multiple", "boolean"],
   "upl_cb" => ["upl_cb","username",3,35,[],'MIXED',["_","_"]],
@@ -39,6 +40,10 @@ if (!empty($params['type']) && \array_key_exists($params['type'], $file_upload_g
     $upload_accept[] = $mime;
   }
 }
+// echo "<tt> <pre>";
+// print_r($params);
+// echo "</pre></tt>";
+// exit;
 if (empty($params['upl_cb'])) $params['upl_cb'] = "handleUpload";
 if (empty($params['crp_cb'])) $params['crp_cb'] = "requery";
 ?>
@@ -153,6 +158,7 @@ if (empty($params['crp_cb'])) $params['crp_cb'] = "requery";
 
             <input type="hidden" name="owner" value="<?php echo !empty($params['owner']) ? $params['owner'] : ((\define('FILE_ACCESS_SCOPE') && FILE_ACCESS_SCOPE == 'USER') ? $session->name : "SYSTEM.{$session->access_group}"); ?>">
             <input type="hidden" name="file_type" value="<?php echo $params['type']; ?>">
+            <input type="hidden" name="set_user" value="<?php echo $params['set_user']; ?>">
             <input type="hidden" name="set_as" value="<?php echo $params['set_as']; ?>">
             <input type="hidden" name="set_avatar" value="<?php echo (bool)$params['set_sesskey'] ? 1 : 0; ?>">
             <input type="hidden" name="set_multiple" value="<?php echo $params['set_multiple']; ?>">

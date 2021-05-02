@@ -14,6 +14,7 @@ $params = $gen->requestParam([
   "type" => ["type","option",\array_keys($file_upload_groups)],
   "frc_type" => ["frc_type","option",\array_keys($file_upload_groups)],
   "owner" => ["owner", "username", 3,12],
+  "set_user" => ["set_user", "text", 2,0],
   "set_as" => ["set_as", "text", 2,0],
   "set_multiple" => ["set_multiple", "boolean"],
   "set_ttl" => ["set_ttl", "text", 5, 32],
@@ -26,6 +27,12 @@ $params = $gen->requestParam([
   "rtt" => ["rtt","url"],
   "rtt_ttl" => ["rtt_ttl","text", 3, 28]
 ],$_GET,[]);
+// @ $params["upl_multiple"] = isset($_GET["upl_multiple"]) && $_GET["upl_multiple"] == "" ? true : ((bool)$_GET["upl_multiple"] ? 1 : 0) ;
+// @ $params["set_multiple"] = isset($_GET["set_multiple"]) && $_GET["set_multiple"] == "" ? true : ((bool)$_GET["set_multiple"] ? 1 : 0) ;
+// echo "<tt> <pre>";
+// var_dump($params);
+// echo "</pre></tt>";
+// exit;
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr" manifest="/site.webmanifest">
@@ -120,9 +127,10 @@ $params = $gen->requestParam([
                 <button type="button" onclick="faderBox.url('/app/ikechukwuokalia/file-manager.soswapp/service/uploader-popup.php',{
                   owner : '<?php echo !empty($params['owner']) ? $params['owner'] : ((\defined('FILE_ACCESS_SCOPE') && FILE_ACCESS_SCOPE == 'USER') ? $session->name : "SYSTEM.{$session->access_group}") ?>',
                   type : '<?php echo !empty($params['type']) ? $params['type'] : '' ?>',
+                  set_user : '<?php echo !empty($params['set_user']) ? $params['set_user'] : '' ?>',
                   set_as : '<?php echo !empty($params['set_as']) ? $params['set_as'] : '' ?>',
                   upl_cb : '<?php echo (!empty($params['set_as']) && !empty($params['set_cb'])) ? $params['set_cb'] : !empty($params['upl_cb']) ? $params['upl_cb'] : '' ?>',
-                  upl_multiple : <?php echo $params['upl_multiple'] == '' || (bool)$params['upl_multiple'] ? 1 : 0 ?>, set_multiple : <?php echo (bool)$params['set_multiple'] ? 1 : 0 ?>
+                  upl_multiple : <?php echo \is_bool($params['upl_multiple']) && isset($_GET['upl_multiple']) ? ((bool)$params['upl_multiple'] ? 1 : 0) : 1 ?>, set_multiple : <?php echo (bool)$params['set_multiple'] ? 1 : 0 ?>
                 },{exitBtn : true})" class="btn face-secondary"> <i class="fas fa-cloud-upload-alt"></i> Upload</button>
               </div>
               <div class="grid-6-tablet">

@@ -17,6 +17,7 @@ $params = $gen->requestParam(
     "owner" =>["owner","username",5,21,[], "MIXED", [".","_","-"]],
     "file_type" => ["file_type","option", \array_keys($file_upload_groups)],
     "set_as" => ["set_as", "text", 2,0],
+    "set_user" => ["set_user", "text", 2,0],
     "set_avatar" => ["set_avatar", "boolean"],
     "set_multiple" => ["set_multiple", "boolean"],
     "caption" => ["caption","text",5,55],
@@ -109,7 +110,7 @@ foreach ($_FILES as $pfid => $attached_file) {
       // set file
       if (!empty($params["set_as"])) {
         try {
-          Helper\setting_set_file_default((\defined('FILE_ACCESS_SCOPE') && FILE_ACCESS_SCOPE == 'USER' ? $params['owner'] : "SYSTEM"), $params['set_as'], $file->id, (bool)$params["set_multiple"]);
+          Helper\setting_set_file_default((\defined('FILE_ACCESS_SCOPE') && FILE_ACCESS_SCOPE == 'USER' ? (!empty($params["set_user"]) ? $params["set_user"] : $params['owner']) : "SYSTEM"), $params['set_as'], $file->id, (bool)$params["set_multiple"]);
           if ((bool)$params["set_avatar"]) {
             $session->user->avatar = $_SESSION['user']->avatar = $file->url();
           }

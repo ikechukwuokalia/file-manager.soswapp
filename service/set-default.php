@@ -12,6 +12,7 @@ $gen = new Generic;
 $required = ["fid", "set_as", "set_ttl"];
 $pre_params = [
   "fid" => ["fid","int"],
+  "set_user" => ["set_user", "text", 2,0],
   "set_as" => ["set_as", "text", 2,0],
   "set_multiple" => ["set_multiple", "boolean"],
   "set_ttl" => ["set_ttl", "text", 5, 32],
@@ -30,6 +31,10 @@ if (!empty($params['fid'])) {
   if (!$file) $errors[] = "No file found for given [fid]: {$params["fid"]}";
 }
 if (empty($params['callback'])) $params['callback'] = "requery";
+// echo "<tt> <pre>";
+// print_r($_GET);
+// echo "</pre></tt>";
+// exit;
 ?>
 <input type="hidden" id="setdata" <?php if ($params) { foreach($params as $k=>$v) { echo "data-{$k}=\"{$v}\" \r\n"; } }?>>
 <div id="fader-flow">
@@ -63,6 +68,7 @@ if (empty($params['callback'])) $params['callback'] = "requery";
 
             <input type="hidden" name="user" value="<?php echo $session->name; ?>">
             <input type="hidden" name="fid" value="<?php echo $file->id; ?>">
+            <input type="hidden" name="set_user" value="<?php echo $params['set_user']; ?>">
             <input type="hidden" name="set_as" value="<?php echo $params['set_as']; ?>">
             <input type="hidden" name="set_multiple" value="<?php echo (bool)$params['set_multiple'] ? 1 : 0; ?>">
 

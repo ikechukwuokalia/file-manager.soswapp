@@ -130,7 +130,7 @@ function listFiles (files) {
       html += `<h3 class="fw-lighter">${file.min_caption}</h3>`;
       html += `<p class="btn-stack">`;
       if (param.set_as !== "" && param.set_as !== file.set_as) {
-        html += `<button onclick="sos.fbx.url('/app/ikechukwuokalia/file-manager.soswapp/service/set-default.php',{set_as : '${param.set_as}', callback : '${param.set_cb}', fid : ${file.id}, set_ttl : '${param.set_ttl}'},{exitBtn : true});" title="Set as ${param.set_ttl}" class="file-action sos-btn green"> <i class="fas fa-check-circle"></i> <span class="btn-text">Set as</span></button>`;
+        html += `<button onclick="sos.fbx.url('/app/ikechukwuokalia/file-manager.soswapp/service/set-default.php',{set_as : '${param.set_as}', set_user : '${param.set_user}', callback : '${param.set_cb}', fid : ${file.id}, set_ttl : '${param.set_ttl}'},{exitBtn : true});" title="Set as ${param.set_ttl}" class="file-action sos-btn green"> <i class="fas fa-check-circle"></i> <span class="btn-text">Set as</span></button>`;
       } if (file.set_as) {
         // unset button
         html += `<button onclick="sos.fbx.url('/app/ikechukwuokalia/file-manager.soswapp/service/unset-default.php',{callback : 'requery', fid : ${file.id}},{exitBtn : true});" title="Unset default" class="file-action sos-btn grey"> <i class="far fa-circle"></i> <span class="btn-text">Unset</span></button>`;
