@@ -46,7 +46,7 @@ if (!empty($params['fid'])) {
           <?php }else{ ?>
             <div class="grid-5-tablet">
               <?php if ($file->type_group == "image"): ?>
-                <a href="<?php echo $file->url(); ?>" data-caption="<?php echo $file->caption; ?>" data-fancybox="solo">
+                <a href="<?php echo $file->url(); ?>" onclick="sos.faderBox.close();" data-caption="<?php echo $file->caption; ?>" data-fancybox="solo">
                   <img style="max-width:100%; height: auto" src="<?php echo Generic::setGet($file->url(), ["getsize" => "320"]) ?>" alt="<?php echo $file->caption; ?>">
                 </a>
               <?php endif; ?>
