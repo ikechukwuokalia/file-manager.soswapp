@@ -61,6 +61,7 @@ if (empty($_FILES)) {
 }
 
 $file_db = MYSQL_FILE_DB;
+$file_tbl = MYSQL_FILE_TBL;
 $whost = WHOST;
 $save_dir = file_upload_path(FILE_UPLOAD_PATH, true);
 // "fileid" => [
@@ -116,6 +117,31 @@ foreach ($_FILES as $pfid => $attached_file) {
           }
         } catch (\Exception $e) {
           $upload_errors[] = "(#{$pfid} - {$_FILES[$pfid]["name"]}) - Failed to complete setting due to error: ({$e->getMessage()})";
+        }
+      }
+      if ($file->groupName() == "image" && (\defined("FILE_IMAGE_MAX_WIDTH") || \defined("FILE_IMAGE_MAX_HEIGHT"))) {
+        // get image dimension for resizing
+        if (\defined("FILE_IMAGE_MAX_WIDTH")) {
+          @ list($width, $height) = \getimagesize($file->fullPath());
+          if ($width && $width > FILE_IMAGE_MAX_WIDTH) {
+            // resize width
+            if (!$file->resizeImage(FILE_IMAGE_MAX_WIDTH)) {
+              $upload_errors[] = "Failed to correct image width for [{$file->id}]";
+            }
+          }
+        }
+        if (\defined("FILE_IMAGE_MAX_HEIGHT")) {
+          @ list($width, $height) = \getimagesize($file->fullPath());
+          if ($height && $height > FILE_IMAGE_MAX_HEIGHT) {
+            // resize width
+            if (!$file->resizeImage(0, FILE_IMAGE_MAX_HEIGHT)) {
+              $upload_errors[] = "Failed to correct image height for [{$file->id}]";
+            }
+          }
+        }
+        // update file size
+        if ($fsize = \filesize($file->fullPath())) {
+          $database->query("UPDATE {$file_db}.`{$file_tbl}` SET _size = {$fsize} WHERE id={$file->id} LIMIT 1");
         }
       }
     }
