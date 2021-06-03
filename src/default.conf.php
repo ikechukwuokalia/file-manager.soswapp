@@ -18,12 +18,13 @@ function file_upload_path (string $path = FILE_UPLOAD_PATH, bool $mkdir = false)
   $path = \str_replace("%{USER}", $session->name, $path);
   $path = \str_replace("%{DATEYEAR}", \strftime("%Y",\time()), $path);
   $path = \str_replace("%{DATEMONTH}", \strftime("%m",\time()), $path);
-  if (!\file_exists(PRJ_ROOT . $path) && $mkdir ) {
-    if (!\mkdir(PRJ_ROOT . $path, 0777, true)) {
+  $real_path = \defined("FILE_STORAGE_DIR") ? FILE_STORAGE_DIR . $path : PRJ_ROOT . "/storage" . $path;
+  if (!\file_exists($real_path) && $mkdir ) {
+    if (!\mkdir($real_path, 0777, true)) {
       throw new \Exception(PRJ_ROOT . "{$path} does not exist and could be created. Check that directory is correct and has expected permission.", 1);
     }
   }
-  return PRJ_ROOT . $path;
+  return $real_path;
 }
 function file_default_owner() {
   global $session;
