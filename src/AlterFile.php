@@ -14,7 +14,7 @@ $gen = new Generic;
 $req = ["fid", "action", 'CSRF_token','form'];
 if (!empty($post['action'] && $post['action'] == "ROTATE")) $req[] = "degree";
 $params = $gen->requestParam( [
-    "user" =>["user","username",2,12],
+    "user" =>["user","username", 3, 16],
     "fid" => ["fid","int"],
     "action" => ["action","option",["WATERMARK", "DELETE", "LOCK", "ROTATE"]],
     "degree" => ["degree","float"],

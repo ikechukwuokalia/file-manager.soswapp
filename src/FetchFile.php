@@ -24,7 +24,7 @@ if ( !$http_auth && ( empty($post['form']) || empty($post['CSRF_token']) ) ){
 }
 $required = [];
 $params = [
-    "user"   => ["user","username",3,12,[], "MIXED"],
+    "user"   => ["user","username", 3, 16,[], "MIXED"],
     "type"  => ["type","option", \array_keys($file_upload_groups)],
     "search" => ["search","text",3,55],
     "ids" => ["ids","text",1,256],
