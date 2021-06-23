@@ -14,7 +14,7 @@ $post = $_POST; // json data
 $gen = new Generic;
 $params = $gen->requestParam(
   [
-    "owner" =>["owner","username",5,21,[], "MIXED", [".","_","-"]],
+    "owner" =>["owner","username",3,21,[], "MIXED", [".","_","-"]],
     "file_type" => ["file_type","option", \array_keys($file_upload_groups)],
     "set_as" => ["set_as", "text", 2,0],
     "set_user" => ["set_user", "text", 2,0],

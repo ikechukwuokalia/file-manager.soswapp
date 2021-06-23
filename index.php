@@ -60,7 +60,7 @@ $params = $gen->requestParam([
     <link rel="stylesheet" href="/app/ikechukwuokalia/file-manager.soswapp/css/file-manager.min.css">
   </head>
   <body>
-    <input type="hidden" id="setup-page" data-datapager=".data-pager .pager-btn" data-datacontainer="#file-list" data-datasearch="files" data-datahandle="listFiles">
+    <input type="hidden" data-setup="page" data-datapager=".data-pager .pager-btn" data-datacontainer="#file-list" data-datasearch="files" data-datahandle="listFiles">
     <input type="hidden" id="rparam" <?php if ($params) { foreach($params as $k=>$v){ echo "data-{$k}=\"{$v}\" "; } }?>>
     <?php \TymFrontiers\Helper\setup_page((!empty($params['type']) ? "file-manager-{$params['type']}" : "file-manager"), "file-manager", true, PRJ_HEADER_HEIGHT); ?>
 

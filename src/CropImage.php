@@ -13,7 +13,7 @@ $post = $_POST; // json data
 $gen = new Generic;
 $params = $gen->requestParam(
   [
-    "owner" =>["owner","username",5,21,[], "MIXED", [".","_","-"]],
+    "owner" =>["owner","username",3,21,[], "MIXED", [".","_","-"]],
     "fid" => ["fid","int"],
     "w" => ["width", "float",],
     "h" => ["height", "float",],
