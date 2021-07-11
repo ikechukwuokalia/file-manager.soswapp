@@ -160,7 +160,7 @@ if (empty($params['crp_cb'])) $params['crp_cb'] = "requery";
             <input type="hidden" name="file_type" value="<?php echo $params['type']; ?>">
             <input type="hidden" name="set_user" value="<?php echo $params['set_user']; ?>">
             <input type="hidden" name="set_as" value="<?php echo $params['set_as']; ?>">
-            <input type="hidden" name="set_avatar" value="<?php echo (bool)$params['set_sesskey'] ? 1 : 0; ?>">
+            <input type="hidden" name="set_avatar" value="<?php echo (bool)$params['set_avatar'] ? 1 : 0; ?>">
             <input type="hidden" name="set_multiple" value="<?php echo $params['set_multiple']; ?>">
 
             <input

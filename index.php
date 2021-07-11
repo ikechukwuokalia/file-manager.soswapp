@@ -129,7 +129,7 @@ $params = $gen->requestParam([
                   type : '<?php echo !empty($params['type']) ? $params['type'] : '' ?>',
                   set_user : '<?php echo !empty($params['set_user']) ? $params['set_user'] : '' ?>',
                   set_as : '<?php echo !empty($params['set_as']) ? $params['set_as'] : '' ?>',
-                  upl_cb : '<?php echo (!empty($params['set_as']) && !empty($params['set_cb'])) ? $params['set_cb'] : !empty($params['upl_cb']) ? $params['upl_cb'] : '' ?>',
+                  upl_cb : '<?php echo (!empty($params['set_as']) && !empty($params['set_cb'])) ? $params['set_cb'] : (!empty($params['upl_cb']) ? $params['upl_cb'] : ''); ?>',
                   upl_multiple : <?php echo \is_bool($params['upl_multiple']) && isset($_GET['upl_multiple']) ? ((bool)$params['upl_multiple'] ? 1 : 0) : 1 ?>, set_multiple : <?php echo (bool)$params['set_multiple'] ? 1 : 0 ?>
                 },{exitBtn : true})" class="btn face-secondary"> <i class="fas fa-cloud-upload-alt"></i> Upload</button>
               </div>
