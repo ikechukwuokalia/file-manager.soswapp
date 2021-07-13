@@ -11,6 +11,7 @@ require_once "../.appinit.php";
 
 $post = $_POST; // json data
 $gen = new Generic;
+if (empty($post['x']) || $post['x'] == 0 || $post['x'] == '') $post['x'] = 0.1;
 $params = $gen->requestParam(
   [
     "owner" =>["owner","username",3,21,[], "MIXED", [".","_","-"]],
