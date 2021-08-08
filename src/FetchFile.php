@@ -109,6 +109,7 @@ if (\defined('FILE_ACCESS_SCOPE') && FILE_ACCESS_SCOPE === "ADMIN.RANK") {
       )";
 } else {
   $cond .= " WHERE (fi._creator = '{$database->escapeValue($params['user'])}' OR fi.owner = '{$database->escapeValue($params['user'])}') ";
+  $cond .= " AND fi._creator != 'SYSTEM.HIDDEN' ";
 }
 if (!empty($params['id'])) {
   $cond .= " AND fi.id = {$params['id']} ";
