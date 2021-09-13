@@ -15,7 +15,7 @@ $pre_params = [
 ];
 $params = $gen->requestParam($pre_params,$_GET,$required);
 if (!$params || !empty($gen->errors)) {
-  $errs = (new InstanceError($gen,true))->get("requestParam",true);
+  $errs = (new InstanceError($gen, false))->get("requestParam",true);
   foreach ($errs as $er) {
     $errors[] = $er;
   }

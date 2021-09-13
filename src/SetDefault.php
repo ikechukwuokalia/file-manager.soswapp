@@ -27,7 +27,7 @@ $params = $gen->requestParam(
   ["fid", "set_as", 'CSRF_token','form']
 );
 if (!$params || !empty($gen->errors)) {
-  $errors = (new InstanceError($gen,true))->get("requestParam",true);
+  $errors = (new InstanceError($gen, false))->get("requestParam",true);
   echo \json_encode([
     "status" => "3." . \count($errors),
     "errors" => $errors,
@@ -37,7 +37,7 @@ if (!$params || !empty($gen->errors)) {
 }
 
 if ( !$gen->checkCSRF($params["form"],$params["CSRF_token"]) ) {
-  $errors = (new InstanceError($gen,true))->get("checkCSRF",true);
+  $errors = (new InstanceError($gen, false))->get("checkCSRF",true);
   echo \json_encode([
     "status" => "3." . \count($errors),
     "errors" => $errors,
