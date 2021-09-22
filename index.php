@@ -154,9 +154,10 @@ $params = $gen->requestParam([
           </div>
 
           <div class="sec-div padding -p10">
-            <div id="file-list" class="no-result"></div>
-
             <br class="c-f">
+            <div id="file-list" class="no-result sec-div"></div>
+            <br class="c-f">
+
             <div class="data-pager">
               <div class="pager-num">
                 <span class="page-text">0</span>/<span class="pages-text">00</span>
