@@ -99,14 +99,6 @@ $.fn.pageFile = function(){
 // ---------------------------------
 // relative functions
 const pConf = sos.config.page;
-function checkPost (resp = {}) {
-  if( resp && resp.status === "0.0"){
-    setTimeout(function(){
-      removeAlert();
-      requery();
-    },1800);
-  }
-}
 window.requery = function () {
   if ($('#query-form').length > 0 ) $('#query-form').submit();
 }
@@ -157,72 +149,6 @@ function listFiles (files) {
     wrapr.html(html);
   }
 };
-const doFetch = (resp) => {
-  if( resp && resp.status == "0.0" && object_length(resp[pConf.datasearch]) > 0){
-    $('.pages-text').text(resp.pages); $('.pages-val').val(resp.pages); sos.config.page["pages"] = resp.pages;
-    $('.records-text').text(resp.records); $('.records-val').val(resp.records); sos.config.page["records"] = resp.records;
-    $('.page-val').val(resp.page); $('.page-text').text(resp.page); sos.config.page["page"] = resp.page;
-    $('.limit-val').val(resp.limit); $('.limit-text').text(resp.limit); sos.config.page["limit"] = resp.limit;
-    if( resp.has_next_page ) $('#next-page').data('page',resp.next_page); sos.config.page["hasNextPage"] = resp.has_next_page;
-    if( resp.has_previous_page ) $('#previous-page').data('page',resp.previous_page); sos.config.page["hasPreviousPage"] = resp.has_previous_page;
-    if (typeof window[pConf.datahandle] === "function") {
-      window[pConf.datahandle](resp[pConf.datasearch]);
-    }
-    removeAlert();
-    pageNatr();
-    if (history.pushState) {
-      let newurl = setGet(location.href, {
-        page    : resp.page,
-        limit   : resp.limit,
-        search  : resp.search,
-        type    : resp.type,
-        id      : resp.id,
-        ids     : resp.ids
-      });
-      window.history.pushState({path:newurl},'',newurl);
-    }
-  } else {
-    $(`${pConf.datacontainer}`).html('').addClass("no-result");
-  }
-  pageNatr();
-};
-const pageNatr = () => {
-  let elem = $(`${pConf.datapager}`);
-  if (pConf.hasPreviousPage) {
-    $(document).find("button.prev-page-btn").remove();
-    elem.append($(`<button class='sos-btn face-secondary prev-page-btn' onclick="pageTo(${pConf.page - 1});"> <i class="fas fa-2x fa-angle-left"></i></button>`));
-  } else {
-    $(document).find("button.prev-page-btn").remove();
-  }
-  if (pConf.hasNextPage) {
-    $(document).find("button.next-page-btn").remove();
-    elem.append($(`<button class='sos-btn face-secondary next-page-btn' onclick="pageTo(${pConf.page + 1});"> <i class="fas fa-2x fa-angle-right"></i></button>`));
-  } else {
-    $(document).find("button.next-page-btn").remove();
-  }
-};
-const pageTo = (page = 0) => {
-  if (page > 0) {
-    $(`.page-val`).val(page);
-    requery();
-  }
-};
-function doPost(resp = {}) {
-  if( resp && resp.status == '0.0' || resp.errors.length < 1 ){
-    if( ('callback' in param) && typeof window[param.callback] === 'function' ){
-      faderBox.close();
-      window[param.callback](resp);
-    }else{
-      setTimeout(function(){
-        faderBox.close();
-        removeAlert();
-        requery();
-      },1500);
-    }
-  }
-}
-
-// ---------------------------------
 
 // pre-activity
 (function(){
